@@ -48,6 +48,9 @@ module.exports = class Pool extends events.EventEmitter
       
   empty: ->
     @available.length == @workers.length
+
+  pending: ->
+    @queue.length()
     
   fork: ->
     worker = fork(path.join(__dirname, 'worker.js'), [@file, JSON.stringify({coffee: @options.coffee})])
