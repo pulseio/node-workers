@@ -57,7 +57,9 @@ module.exports = class Pool extends events.EventEmitter
     
     worker.on 'message', (msg) =>
       switch msg.name
-        when 'done' then @findWork(worker)
+        when 'done'
+          @emit 'task-complete'
+          @findWork(worker)
         when 'error' then @error(worker, msg.payload)
         when 'alive?' then ''
         
