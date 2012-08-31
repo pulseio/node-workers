@@ -23,7 +23,7 @@ class Worker
     
   message: (msg) =>
     switch msg.name
-      when 'task' then @perform(msg)
+      when 'task' then @perform(msg.payload)
 
   perform: (task) ->
     
