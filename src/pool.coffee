@@ -53,7 +53,13 @@ module.exports = class Pool extends events.EventEmitter
     @queue.length + (@workers.length - @available.length)
     
   fork: ->
+    # If this was started from coffee script, we need to alter the exec path so we can fire off our worker.js script
+    execPath = process.execPath
+    if execPath.match(/coffee$/)
+      process.execPath = 'node'
+      
     worker = fork(path.join(__dirname, 'worker.js'), [@file, JSON.stringify({coffee: @options.coffee})])
+    process.execPath = execPath
     
     worker.on 'message', (msg) =>
       switch msg.name
